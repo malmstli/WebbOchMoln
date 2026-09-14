@@ -1,7 +1,9 @@
-GET http://localhost:8080/notes
+@API_URL = {{$dotenv PRODUCTION_API}}
+
+GET @{{API_URL}}/notes
 
 ### Skapa ny note
-POST http://localhost:8080/notes
+POST @{{API_URL}}/notes/2
 Content-Type: application/json
 
 {
@@ -9,7 +11,7 @@ Content-Type: application/json
 }
 
 ### Uppdatera note
-PUT http://localhost:8080/notes/2
+PUT @{{API_URL}}/notes/3
 Content-Type: application/json
 
 {
@@ -17,4 +19,4 @@ Content-Type: application/json
 }
 
 ### Uppdatera note
-DELETE http://localhost:8080/notes/2
+DELETE @{{API_URL}}/notes/2

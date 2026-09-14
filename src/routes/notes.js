@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-    console.log(`PATCH ${req.params.id}`)
+    console.log(`PUT ${req.params.id}`)
     // TEMP, ersätts med DB
     tempData[req.params.id-1] = req.body
     res.send({
