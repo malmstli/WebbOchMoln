@@ -1,22 +1,23 @@
-@API_URL = {{$dotenv PRODUCTION_API}}
-
-GET @{{API_URL}}/notes
+# Rest-client stöder .env
+#@API_URL = {{$dotenv PRODUCTION_API}}
+@API_URL = http://localhost:3000
+GET {{API_URL}}/notes
 
 ### Skapa ny note
-POST @{{API_URL}}/notes/2
+POST {{API_URL}}/notes
 Content-Type: application/json
 
 {
-    "text": "POST funkar!"
+    "note": "POST funkar!"
 }
 
 ### Uppdatera note
-PUT @{{API_URL}}/notes/3
+PUT {{API_URL}}/notes/2
 Content-Type: application/json
 
 {
-    "text": "tung tung tung sahur!"
+    "text": "Ny text!!"
 }
 
-### Uppdatera note
-DELETE @{{API_URL}}/notes/2
+### Delete note
+DELETE {{API_URL}}/notes/3

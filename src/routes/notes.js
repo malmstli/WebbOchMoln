@@ -1,43 +1,51 @@
 const express = require('express')
 const router = express.Router()
+const { PrismaClient } = require('@prisma/client')
 
-// Temporär "databas", ersätts senare med riktig DB
-const tempData = [
-    { "text": "Hello" },
-    { "text": "morjens" }
-]
+const prisma = new PrismaClient()
 
-router.get('/', (req, res) => {
-    res.send(tempData)
+router.get('/', async (req, res) => {
+    const notes = await prisma.notes.findMany()
+    res.send(notes)
 })
 
-router.post('/', (req, res) => {
-    console.log(req.body)
-    // TEMP, ersätts med DB
-    tempData.push(req.body)
+router.post('/', async (req, res) => {
+    const note = await prisma.notes.create({
+        data: {
+            author_id: 1,
+            note: req.body.note
+        }
+    })
+
     res.send({
-        msg: "Note created", 
-        id: tempData.length
+        msg: 'Note created',
+        id: note.id
     })
 })
 
-router.put('/:id', (req, res) => {
-    console.log(`PUT ${req.params.id}`)
-    // TEMP, ersätts med DB
-    tempData[req.params.id-1] = req.body
+router.put('/:id', async (req, res) => {
+    const note = await prisma.notes.update({
+        where: { id: Number(req.params.id) },
+        data: {
+            note: req.body.note || req.body.text,
+            updated_at: new Date()
+        }
+    })
+
     res.send({
-        msg: "Note updated", 
-        id: req.params.id,
-        newNote: tempData[req.params.id-1]
+        msg: 'Note updated',
+        id: note.id,
+        note
     })
 })
 
-router.delete('/:id', (req, res) => {
-    // TEMP, ersätts med DB
-    tempData.splice(req.params.id-1)
+router.delete('/:id', async (req, res) => {
+    await prisma.notes.delete({
+        where: { id: Number(req.params.id) }
+    })
 
     res.send({
-        msg: "Note deleted", 
+        msg: 'Note deleted',
         id: req.params.id
     })
 })
